@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.process.dao.source2.Aj2013AkmemoMapper">
+  <resultMap id="BaseResultMap" type="com.bm.process.pojo.Aj2013Akmemo">
+    <id column="AKMEMO_GUID" jdbcType="VARCHAR" property="akmemoGuid" />
+    <result column="TJBH" jdbcType="VARCHAR" property="tjbh" />
+    <result column="AKMEMO" jdbcType="VARCHAR" property="akmemo" />
+    <result column="BMSAH" jdbcType="VARCHAR" property="bmsah" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    AKMEMO_GUID, TJBH, AKMEMO, BMSAH
+  </sql>
+  <select id="selectByExample" parameterType="com.bm.process.pojo.Aj2013AkmemoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from AJ2013_AKMEMO
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from AJ2013_AKMEMO
+    where AKMEMO_GUID = #{akmemoGuid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from AJ2013_AKMEMO
+    where AKMEMO_GUID = #{akmemoGuid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bm.process.pojo.Aj2013AkmemoExample">
+    delete from AJ2013_AKMEMO
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bm.process.pojo.Aj2013Akmemo">
+    insert into AJ2013_AKMEMO (AKMEMO_GUID, TJBH, AKMEMO, 
+      BMSAH)
+    values (#{akmemoGuid,jdbcType=VARCHAR}, #{tjbh,jdbcType=VARCHAR}, #{akmemo,jdbcType=VARCHAR}, 
+      #{bmsah,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bm.process.pojo.Aj2013Akmemo">
+    insert into AJ2013_AKMEMO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="akmemoGuid != null">
+        AKMEMO_GUID,
+      </if>
+      <if test="tjbh != null">
+        TJBH,
+      </if>
+      <if test="akmemo != null">
+        AKMEMO,
+      </if>
+      <if test="bmsah != null">
+        BMSAH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="akmemoGuid != null">
+        #{akmemoGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="tjbh != null">
+        #{tjbh,jdbcType=VARCHAR},
+      </if>
+      <if test="akmemo != null">
+        #{akmemo,jdbcType=VARCHAR},
+      </if>
+      <if test="bmsah != null">
+        #{bmsah,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bm.process.pojo.Aj2013AkmemoExample" resultType="java.lang.Long">
+    select count(*) from AJ2013_AKMEMO
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update AJ2013_AKMEMO
+    <set>
+      <if test="record.akmemoGuid != null">
+        AKMEMO_GUID = #{record.akmemoGuid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tjbh != null">
+        TJBH = #{record.tjbh,jdbcType=VARCHAR},
+      </if>
+      <if test="record.akmemo != null">
+        AKMEMO = #{record.akmemo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bmsah != null">
+        BMSAH = #{record.bmsah,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update AJ2013_AKMEMO
+    set AKMEMO_GUID = #{record.akmemoGuid,jdbcType=VARCHAR},
+      TJBH = #{record.tjbh,jdbcType=VARCHAR},
+      AKMEMO = #{record.akmemo,jdbcType=VARCHAR},
+      BMSAH = #{record.bmsah,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bm.process.pojo.Aj2013Akmemo">
+    update AJ2013_AKMEMO
+    <set>
+      <if test="tjbh != null">
+        TJBH = #{tjbh,jdbcType=VARCHAR},
+      </if>
+      <if test="akmemo != null">
+        AKMEMO = #{akmemo,jdbcType=VARCHAR},
+      </if>
+      <if test="bmsah != null">
+        BMSAH = #{bmsah,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where AKMEMO_GUID = #{akmemoGuid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bm.process.pojo.Aj2013Akmemo">
+    update AJ2013_AKMEMO
+    set TJBH = #{tjbh,jdbcType=VARCHAR},
+      AKMEMO = #{akmemo,jdbcType=VARCHAR},
+      BMSAH = #{bmsah,jdbcType=VARCHAR}
+    where AKMEMO_GUID = #{akmemoGuid,jdbcType=VARCHAR}
+  </update>
+</mapper>

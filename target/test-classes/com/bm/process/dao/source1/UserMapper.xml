@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.process.dao.source1.UserDao">
+
+	<select id="getUserInfo" parameterType="java.util.Map" resultType="com.bm.process.pojo.UserEntity">
+		SELECT
+			A.USER_ID ID,
+			A.USER_NAME NAME,
+			A.USER_PWD pwd,
+			A.GH gh,
+			A.ORG_LEV3_CODE lineLev3Code,
+			A.ORG_LEV3_NAME lineLev3Name,
+			A.DLBM loginName,
+			A.SFZH sfzh,
+			A.ZP zp,
+			b.undertake_depart_name depart_name,
+			b.JSMC
+		FROM
+			DIM_USER A
+		INNER JOIN DIM_USER_DEPART b ON A .USER_ID = b.USER_ID
+		WHERE
+			A .USER_ID = '${userId}'
+	</select>
+	
+	<!-- 登录查询 -->
+	<select id="loginQuery" parameterType="com.bm.process.pojo.UserEntity" resultType="com.bm.process.pojo.UserEntity">
+		select 
+			t.user_id id,
+			t.user_name name,
+			t.user_pwd pwd,
+			t.gh gh,
+			t.org_lev3_code lineLev3Code,
+			t.org_lev3_name lineLev3Name,
+			t.dlbm loginName,
+			t.sfzh sfzh,
+			t.zp zp,
+			t1.undertake_depart_code depart_code,
+			t1.undertake_depart_name depart_name,
+			t1.jsmc,
+			case 
+				when substr(t.org_lev3_code,3,4) = '0000' then '1'
+				when substr(t.org_lev3_code,3,2) != '00' and substr(t.org_lev3_code,5,2) = '00' then '2'
+				when substr(t.org_lev3_code,3,2) != '00' and substr(t.org_lev3_code,5,2) != '00' then '3'
+			end orgLevCode,
+			t1.line_lev1_code lineLev1Code,
+			t1.position_id positionId,
+      		t3.certdn
+		from
+			dim_user t
+			 left join dim_user_depart t1 on t.user_id=t1.user_id 
+   			 left join yhglxt_ry_user t2 on t.user_id=t2.user_id
+   			 left join yhglxt_ry t3 on t2.sfzh=t3.userid
+    	where
+			(t.gzzh = '${name}' or t.dlbm = '${name}')
+			and t.user_pwd = '${pwd}'
+			and t.org_lev3_code = '${corpId}'
+			order by t1.line_lev1_code desc nulls last
+	</select>
+	
+	<!-- 证书登录查询 -->
+	<select id="certloginQuery" parameterType="com.bm.process.pojo.UserEntity" resultType="com.bm.process.pojo.UserEntity">
+	select 
+			t.user_id id,
+			t.user_name name,
+			t.user_pwd pwd,
+			t.gh gh,
+			t.org_lev3_code lineLev3Code,
+			t.org_lev3_name lineLev3Name,
+			t.dlbm loginName,
+			t.sfzh sfzh,
+			t.zp zp,
+			t1.undertake_depart_code depart_code,
+			t1.undertake_depart_name depart_name,
+			t1.jsmc,
+			case 
+				when substr(t.org_lev3_code,3,4) = '0000' then '1'
+				when substr(t.org_lev3_code,3,2) != '00' and substr(t.org_lev3_code,5,2) = '00' then '2'
+				when substr(t.org_lev3_code,3,2) != '00' and substr(t.org_lev3_code,5,2) != '00' then '3'
+			end orgLevCode,
+			t1.line_lev1_code lineLev1Code,
+			t1.position_id positionId,
+    		t3.certdn
+		from
+			dim_user t
+			left join dim_user_depart t1 on t.user_id=t1.user_id 
+    		left join yhglxt_ry_user t2 on t.user_id=t2.user_id
+    		left join yhglxt_ry t3 on t2.sfzh=t3.userid
+   		where
+			t.sfzh='${sfzh}' and t3.certdn='${certdn}'
+			order by t1.line_lev1_code desc nulls last
+	</select>
+</mapper>
